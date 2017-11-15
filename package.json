@@ -1,0 +1,24 @@
+{
+  "name": "web-scraper-service",
+  "version": "0.0.1",
+  "description": "A Node.js Web Scraping Service",
+  "main": "service.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshuaebowling/web-scraper-service.git"
+  },
+  "keywords": [
+    "node.js",
+    "scrape",
+    "service"
+  ],
+  "author": "Josh Bowling",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/joshuaebowling/web-scraper-service/issues"
+  },
+  "homepage": "https://github.com/joshuaebowling/web-scraper-service#readme"
+}

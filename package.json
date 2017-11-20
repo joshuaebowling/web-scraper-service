@@ -22,7 +22,10 @@
   },
   "homepage": "https://github.com/joshuaebowling/web-scraper-service#readme",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "config": "^1.28.1",
-    "jasmine-expect": "^3.7.1"
+    "jasmine-expect": "^3.7.1",
+    "json-socket": "^0.3.0",
+    "node-jasmine-async": "^0.1.0"
   }
 }

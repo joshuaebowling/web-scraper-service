@@ -26,6 +26,7 @@
     "config": "^1.28.1",
     "jasmine-expect": "^3.7.1",
     "json-socket": "^0.3.0",
-    "node-jasmine-async": "^0.1.0"
+    "node-jasmine-async": "^0.1.0",
+    "request": "^2.83.0"
   }
 }

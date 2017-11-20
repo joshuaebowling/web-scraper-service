@@ -1,14 +1,20 @@
 require('jasmine-expect');
-require('node-jasmine-async');
 const 
   net = require('net'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  JsonSocket = require('json-socket')
+;
 
 
 describe("service Spec", function() {
   beforeAll(function(done) {
     this.config = require('config');
-    this.client = new net.Socket();
+    this.client = new JsonSocket(new net.Socket());
+  });
+
+  beforeEach(function() {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
   });
 
   afterAll(function() {
@@ -18,11 +24,8 @@ describe("service Spec", function() {
     // this.client.on('data', (data) => {
     //   console.log(data);
     // });
-    this.client.connect(this.config.port, this.config.address, function(socket) {
-      console.log(arguments);
-    });  
+    this.client.connect(this.config.port, this.config.address, () => {});  
     this.client.on('connect', (socket) => { 
-      console.log('connected client');
       socket.end();
     });
   });
@@ -31,6 +34,21 @@ describe("service Spec", function() {
     expect(this.client.destroy).toBeFunction();
 //    this.client.destroy();
     done();
+  });
+
+
+  it("expect client to receive response", function(done) {    
+    this.client.on('message', (response) => {
+      expect(response).toBeObject();
+      expect(response.body).toBeString();
+      done();
+    });
+
+    this.client.on('connect', () => {
+      this.client.sendMessage({url: 'http://this-page-intentionally-left-blank.org/'});
+    });
+
+    this.client.connect(this.config.port, this.config.address, _.noop);
   });
 
   

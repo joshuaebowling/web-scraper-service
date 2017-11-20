@@ -1,21 +1,24 @@
 const
   net = require('net'),
   config = require('config'),
-  JsonSocket = require('JsonSocket'),
+  JsonSocket = require('json-socket'),
   scraper = require('./scraper');
-  
-const server = net.createServer(function(socket) {
-	socket.write('Echo server\r\n');
-	socket.pipe(socket);
+
+var socket;
+
+const server = net.createServer(function(_socket) {
+  socket = new JsonSocket(_socket);
 });
 
-server.on('connection', _socket => {
-  var socket = new JsonSocket(_socket);
-  socket.on('data', (data) => {
+server.on('connection', () => {
+  socket.on('message', (data) => {
+    console.log('message received', data);
     scraper.scrape(data.url)
-      .then((response) => socket.write({ reponse }, 'utf8'));
+      .then((response) => {
+        socket.sendMessage({ response: response });
+      })
+      .catch(e => console.log(e));
   });
-  socket.pipe(socket);
 });
 
 server.listen(config.port, config.address);

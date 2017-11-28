@@ -48,14 +48,12 @@ describe("scraper Spec", function() {
 
   it("expect scrape function promise to return html data", function(done) {
     var promise = this.scraper.scrape(URL, 'meta');
-    expect(promise.then).toBeFunction();
-    expect(promise.catch).toBeFunction();
     promise
       .then((response) => {
-        expect(response).toBeObject();
-        done();
-      })
-      .catch(() => done());
+          expect(response).toBeArray();
+          done();
+        })
+        .catch((err) => done());
   });
 
 

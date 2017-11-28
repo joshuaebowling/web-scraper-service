@@ -14,5 +14,6 @@ describe("Config Spec", function() {
     expect(this.config).toBeObject();
     expect(this.config.port).toBeNumber();
     expect(this.config.address).toBeString();
+    expect(this.config.instructionsDir).toBeString();
   });
 });

@@ -2,8 +2,11 @@ const
   _ = require('lodash'),
   JsonSocket= require('json-socket'),
   request = require('request'),
+  config = require('config'),
   _scrape = {}
 ;
+
+const instructionsDir = `${__dirname}/${config.instructionsDir}`;
 
 _scrape.parseUrl = function(url) {
   return url;
@@ -11,7 +14,9 @@ _scrape.parseUrl = function(url) {
 
 _scrape.parseResponse = function(response, instructions) {
   return new Promise((resolve, reject) => {
-    resolve(response.html);
+    var parser = require(`${instructionsDir}/${instructions}`);
+    if(!parser) return reject('Instructions Not Found');    
+    resolve(parser(response));
   });
 };
 
@@ -32,12 +37,12 @@ module.exports = {
   _scrape: _scrape.scrape,
   scrape: function(url = "", instructions = null) {
     return new Promise((resolve, reject) => {
-      if(_url === "" || instructions === null)
+      if(url === "" || instructions === null)
         return reject("Please Provide a URL and a valid instruction set");      
       _scrape.scrape(url)
         .then(response => {
-          _scrape.parseResponse(response, instructions)
-            .then(result => resolve(response))
+          _scrape.parseResponse(response.body, instructions)
+            .then(result => resolve(result))
             .catch(e => reject(e));
         })
         .catch(e => reject(e));

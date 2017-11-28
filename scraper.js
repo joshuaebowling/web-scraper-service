@@ -20,7 +20,7 @@ _scrape.scrape = function(_url = "", instructions = null) {
   url = _scrape.parseUrl(_url);
   return new Promise((resolve, reject) => {
     if(_url === "" || instructions === null)
-      reject("Please Provide a URL and a valid instruction set");
+      return reject("Please Provide a URL and a valid instruction set");
     request.get(url, (err, response, body) => {
       if(err) return reject(err);
       resolve(response);

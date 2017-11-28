@@ -4,7 +4,8 @@
   "description": "A Node.js Web Scraping Service",
   "main": "service.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "start": "node ./service"
   },
   "repository": {
     "type": "git",

@@ -15,12 +15,12 @@ _scrape.parseResponse = function(response) {
   });  
 };
 
-_scrape.scrape = function(_url = "") {
+_scrape.scrape = function(_url = "", instructions = null) {
   var response, url;
-  if(_url === "")
-    throw new Error("Please Provide a URL")
   url = _scrape.parseUrl(_url);
   return new Promise((resolve, reject) => {
+    if(_url === "" || instructions === null)
+      reject("Please Provide a URL and a valid instruction set");
     request.get(url, (err, response, body) => {
       if(err) return reject(err);
       resolve(response);

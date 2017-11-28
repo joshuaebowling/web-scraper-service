@@ -17,17 +17,11 @@ describe("service Spec", function() {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
   });
 
-  afterAll(function() {
-  });
-
-  xit("expect client to connect to service", function() {
-    // this.client.on('data', (data) => {
-    //   console.log(data);
-    // });
-    this.client.connect(this.config.port, this.config.address, () => {});  
-    this.client.on('connect', (socket) => { 
-      socket.end();
-    });
+  xit("expect client to connect to service", function(done) {
+    this.client.connect(this.config.port, this.config.address, () => {
+      this.client.end();
+      done();
+    });  
   });
 
   xit("expect client to connect to disconnect service", function(done) {
@@ -37,7 +31,7 @@ describe("service Spec", function() {
   });
 
 
-  it("expect client to receive response", function(done) {    
+  xit("expect client to receive response", function() {    
     this.client.on('message', (response) => {
       expect(response).toBeObject();
       expect(response.body).toBeString();

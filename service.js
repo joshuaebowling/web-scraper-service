@@ -12,8 +12,7 @@ const server = net.createServer(function(_socket) {
 
 server.on('connection', () => {
   socket.on('message', (data) => {
-    console.log('message received', data);
-    scraper.scrape(data.url)
+    scraper.scrape(data.url, data.instructions)
       .then((response) => {
         socket.sendMessage({ response: response });
       })
@@ -22,5 +21,3 @@ server.on('connection', () => {
 });
 
 server.listen(config.port, config.address);
-
-module.exports = server;

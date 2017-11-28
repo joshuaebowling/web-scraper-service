@@ -9,7 +9,7 @@ _scrape.parseUrl = function(url) {
   return url;
 };
 
-_scrape.parseResponse = function(response) {
+_scrape.parseResponse = function(response, instructions) {
   return new Promise((resolve, reject) => {
     resolve(response.html);
   });
@@ -34,11 +34,13 @@ module.exports = {
     return new Promise((resolve, reject) => {
       if(_url === "" || instructions === null)
         return reject("Please Provide a URL and a valid instruction set");      
-      _scrape.scrape(url, instructions)
+      _scrape.scrape(url)
         .then(response => {
-          _scrape.parseResponse(response)
-            .then(result => resolve(response));
-        });
+          _scrape.parseResponse(response, instructions)
+            .then(result => resolve(response))
+            .catch(e => reject(e));
+        })
+        .catch(e => reject(e));
     });
   }
 };

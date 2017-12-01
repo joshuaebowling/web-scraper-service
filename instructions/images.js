@@ -5,12 +5,13 @@ const
 
 module.exports = function(html) {
   var $ = cheerio.load(html);
-  return _.map($('meta'),
+  return _.map($('img'),
     (v, i) => {
-      let $v = $(v);
+      let $v = $(v), src = '';
+      src = $v.attr('src');
       return {
-        name: $v.attr('property') || $v.attr('name') || $v.attr('http-equiv'),
-        value: $v.attr('content')
+        name: $v.attr('alt') || _.last(src.split('/')),
+        value: src
       };
     });
 };

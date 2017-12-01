@@ -46,15 +46,24 @@ describe("scraper Spec", function() {
       .catch(e => done.fail(e));
   });
 
-  it("expect scrape function promise to return html data", function(done) {
+  it("expect scrape function promise to return parsed META data", function(done) {
     var promise = this.scraper.scrape(URL, 'meta');
     promise
       .then((response) => {
           expect(response).toBeArray();
           done();
         })
-        .catch((err) => done());
+        .catch((err) => { console.log(err); done(); });
   });
 
+  it("expect scrape function promise to return parsed IMG data", function(done) {
+    var promise = this.scraper.scrape(URL, 'images');
+    promise
+      .then((response) => {
+          expect(response).toBeArray();
+          done();
+        })
+        .catch((err) => { console.log(err); done(); });
+  });
 
 });

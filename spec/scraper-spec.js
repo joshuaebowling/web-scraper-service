@@ -50,7 +50,8 @@ describe("scraper Spec", function() {
     var promise = this.scraper.scrape(URL, 'meta');
     promise
       .then((response) => {
-          expect(response).toBeArray();
+          expect(response).toBeObject();
+          expect(response.meta).toBeObject();
           done();
         })
         .catch((err) => { console.log(err); done(); });
@@ -60,7 +61,20 @@ describe("scraper Spec", function() {
     var promise = this.scraper.scrape(URL, 'images');
     promise
       .then((response) => {
-          expect(response).toBeArray();
+          expect(response).toBeObject();
+          expect(response.images).toBeObject();
+          done();
+        })
+        .catch((err) => { console.log(err); done(); });
+  });
+
+  it("expect scrape function promise to return parsed IMG and meta data", function(done) {
+    var promise = this.scraper.scrape(URL, ['images','meta']);
+    promise
+      .then((response) => {
+          expect(response).toBeObject();
+          expect(response.images).toBeObject();
+          expect(response.meta).toBeObject();
           done();
         })
         .catch((err) => { console.log(err); done(); });

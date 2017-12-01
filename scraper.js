@@ -1,8 +1,9 @@
 const
   _ = require('lodash'),
   JsonSocket= require('json-socket'),
-  request = require('request'),
+  async = require('async'),
   config = require('config'),
+  request = require('request'),
   _scrape = {}
 ;
 
@@ -12,11 +13,27 @@ _scrape.parseUrl = function(url) {
   return url;
 };
 
-_scrape.parseResponse = function(response, instructions) {
+_scrape.singleInstruction = function(response, instruction) {
   return new Promise((resolve, reject) => {
-    var parser = require(`${instructionsDir}/${instructions}`);
+    var parser = require(`${instructionsDir}/${instruction}`);
     if(!parser) return reject('Instructions Not Found');    
     resolve(parser(response));
+  });  
+};
+
+_scrape.parseResponse = function(response, instructions) {
+  return new Promise((resolve, reject) => {
+    let result = {};
+    async.each(_.isArray(instructions) ? instructions : [instructions], (instruction, callback) => {
+      _scrape.singleInstruction(response, instruction)
+        .then(parsedResponse => { result[instruction] = parsedResponse; callback(); })
+        .catch(err => { result[instruction] = `ERROR:${err}`; callback(err) })
+      ;
+    }, (err) => {
+      if(err) return reject(`An Error Occurred Outside of A Single Parsing: ${err}`);
+      resolve(result);
+    });
+
   });
 };
 

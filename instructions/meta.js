@@ -4,13 +4,11 @@ const
 ;
 
 module.exports = function(html) {
-  var $ = cheerio.load(html);
-  return _.map($('meta'),
+  var $ = cheerio.load(html), result = {};
+  _.each($('meta'),
     (v, i) => {
       let $v = $(v);
-      return {
-        name: $v.attr('property') || $v.attr('name') || $v.attr('http-equiv'),
-        value: $v.attr('content')
-      };
-    });
+      result[$v.attr('property') || $v.attr('name') || $v.attr('http-equiv')] = $v.attr('content');
+  });
+  return result;
 };

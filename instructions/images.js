@@ -4,14 +4,12 @@ const
 ;
 
 module.exports = function(html) {
-  var $ = cheerio.load(html);
-  return _.map($('img'),
+  var $ = cheerio.load(html), result = {};
+  _.each($('img'),
     (v, i) => {
       let $v = $(v), src = '';
       src = $v.attr('src');
-      return {
-        name: $v.attr('alt') || _.last(src.split('/')),
-        value: src
-      };
-    });
+      result[$v.attr('alt') || _.last(src.split('/'))] = src;    
+  });
+  return result;
 };
